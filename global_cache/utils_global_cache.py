@@ -89,7 +89,7 @@ class Entity(object):
         try:
             result = json.loads(decode_binary_string(result))
             value = result.get('value')
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, AttributeError):
             value = None
         return value
 
