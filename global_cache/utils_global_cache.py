@@ -119,7 +119,7 @@ class Entity(object):
         for key in result:
             try:
                 new_result[decode_binary_string(key)] = json.loads(decode_binary_string(result.get(key)))
-            except (ValueError, TypeError):
+            except (ValueError, TypeError, AttributeError):
                 pass
         return new_result
 
@@ -147,7 +147,7 @@ class Entity(object):
         for key in new_result:
             try:
                 result[key] = json.loads(decode_binary_string(new_result.get(key)))
-            except (ValueError, TypeError):
+            except (ValueError, TypeError, AttributeError):
                 pass
         return result
 
@@ -161,7 +161,7 @@ class Entity(object):
         try:
             result = json.loads(decode_binary_string(result))
             value = result.get('value')
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, AttributeError):
             value = None
         return value
 
@@ -207,7 +207,7 @@ class Variable(Entity):
                  deployment=default_deployment, attributes=None,
                  primary_key=None, attributes_mapper=None, connection=None):
         primary_key = u'{0}'.format(getattr(variable, 'id', primary_key))
-        entity = 'device'
+        entity = 'variable'
         primary_key_name = 'id'
         attributes = {True: attributes, False: self.attributes}.get(attributes is not None)
         attributes_mapper = {True: attributes_mapper,
