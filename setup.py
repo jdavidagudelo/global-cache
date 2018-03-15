@@ -3,7 +3,7 @@ from setuptools import setup
 setup(name='ubidots_global_cache',
       version='0.1',
       description='The Ubidots Global Cache',
-      url='http://github.com/storborg/funniest',
+      url='https://github.com/jdavidagudelo/global-cache.git',
       author='jdavidagudelo',
       author_email='jdaaa2009@gmail.com',
       license='MIT',
