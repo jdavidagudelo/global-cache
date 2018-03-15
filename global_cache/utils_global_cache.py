@@ -58,7 +58,14 @@ save_json_document_to_hash_set = script_load(save_json_document_to_hash_set_scri
 
 
 class Entity(object):
+    """
+    This class represents an entity with attributes that will be stored to cache
+    as a hash set in redis. Every attribute will be stored as key/value element
+    of a hash set.
+    """
+    # deployment used to identify different subsystems
     deployment = default_deployment
+    # The name of the entity
     entity = None
     primary_key_name = None
     primary_key = None
@@ -81,6 +88,10 @@ class Entity(object):
 
     @property
     def hash_key(self):
+        """
+
+        :return:
+        """
         return u'{0}:{1}:{2}:{3}'.format(
             self.deployment, self.entity, self.primary_key_name, self.primary_key)
 
@@ -367,7 +378,12 @@ class VariableByLabel(Entity):
 
     def __init__(self, deployment=default_deployment, primary_key=None, variable=None,
                  attributes=None, attributes_mapper=None, connection=None):
-        primary_key = u'{0}'.format(getattr(variable, 'label', primary_key))
+        device = getattr(variable, 'datasource', None)
+        device_label = getattr(device, 'label', None)
+        user_id = getattr(device, 'owner_id', None)
+        variable_label = u'{0}'.format(getattr(variable, 'label', None))
+        local_primary_key = u'{0}:{1}:{2}'.format(user_id, device_label, variable_label)
+        primary_key = {True: primary_key, False: local_primary_key}.get(primary_key is not None)
         entity = 'variable'
         primary_key_name = 'label'
         attributes = {True: attributes, False: self.attributes}.get(attributes is not None)
@@ -452,7 +468,10 @@ class DeviceByLabel(Entity):
 
     def __init__(self, deployment=default_deployment, primary_key=None, device=None,
                  attributes=None, attributes_mapper=None, connection=None):
-        primary_key = u'{0}'.format(getattr(device, 'label', primary_key))
+        device_label = getattr(device, 'label', None)
+        user_id = getattr(device, 'owner_id', None)
+        local_primary_key = u'{0}:{1}'.format(user_id, device_label)
+        primary_key = {True: primary_key, False: local_primary_key}.get(primary_key is not None)
         entity = 'device'
         primary_key_name = 'label'
         attributes = {True: attributes, False: self.attributes}.get(attributes is not None)
