@@ -530,13 +530,6 @@ class User(Entity):
                   'custom_username', 'current_credits',
                   'default_dashboard', 'language', 'website',
                   'timezone', 'properties']
-    attributes_mapper = {
-        'current_credits': lambda user, value: user.profile.current_credits,
-        'default_dashboard': lambda user, value: user.profile.default_dashboard,
-        'language': lambda user, value: user.profile.language,
-        'timezone': lambda user, value: user.profile.timezone,
-        'properties': lambda user, value: user.profile.properties,
-    }
 
     def __init__(self, user=None, deployment=default_deployment, attributes=None,
                  attributes_mapper=None, primary_key=None, connection=None):

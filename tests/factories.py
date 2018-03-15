@@ -47,6 +47,17 @@ def create_business_account():
     return StoredObjectMock(**business_account_data)
 
 
+def create_user():
+    user_data = {
+        'id': 1, 'username': 'petr', 'first_name': 'Petr', 'last_name': 'Pert',
+        'email': 'p@gmail.com',
+        'custom_username': 'abc', 'current_credits': 10,
+        'default_dashboard': 'f' * 24, 'language': 'EN-US', 'website': 'www.google.com',
+        'timezone': 'UTC', 'properties': {'color': 'red'}
+    }
+    return StoredObjectMock(**user_data)
+
+
 def get_redis_connection():
     return Redis(db=settings.EVENTS_REDIS_DATABASE_DB,
                  host=settings.EVENTS_REDIS_DATABASE_HOST,
